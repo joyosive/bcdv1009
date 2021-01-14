@@ -10,4 +10,3 @@ Lab Work for BCDV-1009
    :maxdepth: 2
 
         Lab-2 Creating Jenkins Pipeline <./modules/lab2/index.rst>
-        Lab-3 Front-end web development the TDD way<./modules/lab3/index.rst>
