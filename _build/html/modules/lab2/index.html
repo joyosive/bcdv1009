@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Build a Node.js and React app with npm within Jenkins Pipeline &mdash;  Semester-2  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="SOFTWARE DEV. METHODOLOGIES" href="../lab3/index.html" />
+    <link rel="prev" title="Lab Work for BCDV-1009" href="../../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home">  Semester-2
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">     Lab-2 Creating Jenkins Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lab3/index.html">     Lab-3 Front-end web development the TDD way</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html"> Semester-2</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Build a Node.js and React app with npm within Jenkins Pipeline</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/modules/lab2/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="build-a-node-js-and-react-app-with-npm-within-jenkins-pipeline">
+<h1>Build a Node.js and React app with npm within Jenkins Pipeline<a class="headerlink" href="#build-a-node-js-and-react-app-with-npm-within-jenkins-pipeline" title="Permalink to this headline">¶</a></h1>
+<ol class="loweralpha simple">
+<li><p>Fork the sample repository on GitHub</p></li>
+</ol>
+<div class="figure align-default">
+<img alt="forked simple-node-js-react-npm-app repository (on GitHub)" src="../../_images/00.png" />
+</div>
+<p><strong>Jenkins Setup (Linux Machine)</strong></p>
+<ol class="arabic simple">
+<li><p>Create a bridge network in Docker</p></li>
+</ol>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">docker network create jenkins</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Create the following volumes</p></li>
+</ol>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">docker volume create jenkins-docker-certs</span>
+<span class="go">docker volume create jenkins-data</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>In order to execute Docker commands inside Jenkins nodes, download and run the docker:dind Docker image</p></li>
+</ol>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">docker container run --name jenkins-docker --rm --detach \</span>
+<span class="go">--privileged --network jenkins --network-alias docker \</span>
+<span class="go">--env DOCKER_TLS_CERTDIR=/certs \</span>
+<span class="go">--volume jenkins-docker-certs:/certs/client \</span>
+<span class="go">--volume jenkins-data:/var/jenkins_home \</span>
+<span class="go">--volume &quot;$HOME&quot;:/home \</span>
+<span class="go">--publish 3000:3000 docker:dind</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Run the jenkinsci/blueocean image as a container in Docker using the following docker container run command</p></li>
+</ol>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">docker container run --name jenkins-tutorial --rm --detach \</span>
+<span class="go">--network jenkins --env DOCKER_HOST=tcp://docker:2376 \</span>
+<span class="go">--env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=1 \</span>
+<span class="go">--volume jenkins-data:/var/jenkins_home \</span>
+<span class="go">--volume jenkins-docker-certs:/certs/client:ro \</span>
+<span class="go">--volume &quot;$HOME&quot;:/home --publish 8080:8080 jenkinsci/blueocean</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>Open up following URL in browser localhost:8080
+Setup wizard</p></li>
+</ol>
+<div class="figure align-default">
+<img alt="Unlocking Jenkins" src="../../_images/01.png" />
+</div>
+<ol class="arabic simple" start="6">
+<li><p>Creating the first administrator user</p></li>
+</ol>
+<div class="figure align-default">
+<img alt="../../_images/02.png" src="../../_images/02.png" />
+</div>
+<ol class="arabic simple" start="7">
+<li><p>Instance Configuration</p></li>
+</ol>
+<div class="figure align-default">
+<img alt="../../_images/03.png" src="../../_images/03.png" />
+</div>
+<ol class="arabic simple" start="8">
+<li><p>Start using Jenkins</p></li>
+</ol>
+<div class="figure align-default">
+<img alt="../../_images/04.png" src="../../_images/04.png" />
+</div>
+<ol class="arabic simple" start="9">
+<li><p>Create new jobs</p></li>
+</ol>
+<div class="figure align-default">
+<img alt="../../_images/05.png" src="../../_images/05.png" />
+</div>
+<ol class="arabic simple" start="10">
+<li><p>Enter an item name field, specify the name for your new Pipeline project</p></li>
+</ol>
+<div class="figure align-default">
+<img alt="../../_images/06.png" src="../../_images/06.png" />
+</div>
+<ol class="arabic simple" start="11">
+<li><p>Add pipeline description and choose Pipeline script from SCM option.</p></li>
+</ol>
+<div class="figure align-default">
+<img alt="../../_images/07-1.png" src="../../_images/07-1.png" />
+</div>
+<ol class="arabic simple" start="12">
+<li><p>Open Blue Ocean | click Run, then quickly click the OPEN link which appears briefly at the lower-right to see Jenkins building your Pipeline project</p></li>
+</ol>
+<div class="figure align-default">
+<img alt="../../_images/08.png" src="../../_images/08.png" />
+</div>
+<ol class="arabic simple" start="13">
+<li><p>The Blue Ocean interface turns green if Jenkins built your Node.js and React application successfully.</p></li>
+</ol>
+<div class="figure align-default">
+<img alt="../../_images/10.png" src="../../_images/10.png" />
+</div>
+<ol class="arabic simple" start="14">
+<li><p>Added test stage to Pipeline</p></li>
+</ol>
+<div class="figure align-default">
+<img alt="../../_images/11.png" src="../../_images/11.png" />
+</div>
+<ol class="arabic simple" start="15">
+<li><p>Added a final deliver stage to Pipeline</p></li>
+</ol>
+<div class="figure align-default">
+<img alt="../../_images/12.png" src="../../_images/12.png" />
+</div>
+<ol class="arabic simple" start="16">
+<li><p>React app running on localhost:3000</p></li>
+</ol>
+<div class="figure align-default">
+<img alt="../../_images/13.png" src="../../_images/13.png" />
+</div>
+<ol class="arabic simple" start="17">
+<li><p>Onclick the Proceed button to complete the Pipeline’s execution.</p></li>
+</ol>
+<div class="figure align-default">
+<img alt="../../_images/14.png" src="../../_images/14.png" />
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../lab3/index.html" class="btn btn-neutral float-right" title="SOFTWARE DEV. METHODOLOGIES" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../index.html" class="btn btn-neutral float-left" title="Lab Work for BCDV-1009" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
