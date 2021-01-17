@@ -20,13 +20,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce6eab95-6eb9-4347-bf8d-f295d358a860" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_build/doctrees/environment.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/_build/doctrees/environment.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_build/doctrees/modules/lab5/index.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/_build/doctrees/modules/lab5/index.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_build/html/_sources/modules/lab5/index.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/_build/html/_sources/modules/lab5/index.rst.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_build/html/_static/modules/lab5/index.rst" beforeDir="false" afterPath="$PROJECT_DIR$/_build/html/_static/modules/lab5/index.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_build/html/modules/lab5/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/_build/html/modules/lab5/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_build/html/searchindex.js" beforeDir="false" afterPath="$PROJECT_DIR$/_build/html/searchindex.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/lab5/index.rst" beforeDir="false" afterPath="$PROJECT_DIR$/modules/lab5/index.rst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -71,7 +64,7 @@
       <workItem from="1610626525320" duration="9000" />
       <workItem from="1610626550195" duration="2755000" />
       <workItem from="1610640642062" duration="618000" />
-      <workItem from="1610892349490" duration="374000" />
+      <workItem from="1610892349490" duration="475000" />
     </task>
     <servers />
   </component>

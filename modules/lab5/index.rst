@@ -8,7 +8,7 @@ Lab 5 (Group Lab)
 
 
 Integration of GitHub with Jenkins
-=====================================
+----------------------------------
 
 * Go to Jenkins UI and Open Blue Oceans
 
