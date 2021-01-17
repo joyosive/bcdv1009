@@ -1,6 +1,14 @@
-Integration of GitHub with Jenkins
-==============================================================
+Lab 5 (Group Lab)
+=====================================
 
+**Team Members**
+
+1. Jalmeen (Joy)
+2. Natasha Rupani
+
+
+Integration of GitHub with Jenkins
+=====================================
 
 * Go to Jenkins UI and Open Blue Oceans
 

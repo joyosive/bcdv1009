@@ -1,16 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce6eab95-6eb9-4347-bf8d-f295d358a860" name="Default Changelist" comment="" />
+    <list default="true" id="ce6eab95-6eb9-4347-bf8d-f295d358a860" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_build/doctrees/environment.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/_build/doctrees/environment.pickle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_build/doctrees/modules/lab5/index.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/_build/doctrees/modules/lab5/index.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_build/html/_sources/modules/lab5/index.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/_build/html/_sources/modules/lab5/index.rst.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_build/html/_static/modules/lab5/index.rst" beforeDir="false" afterPath="$PROJECT_DIR$/_build/html/_static/modules/lab5/index.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_build/html/modules/lab5/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/_build/html/modules/lab5/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_build/html/searchindex.js" beforeDir="false" afterPath="$PROJECT_DIR$/_build/html/searchindex.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/lab5/index.rst" beforeDir="false" afterPath="$PROJECT_DIR$/modules/lab5/index.rst" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="cjfbwxw2" />
   </component>
   <component name="ProjectId" id="1n3l18JjlGlfcK1f7888NU8oIV2" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -40,10 +71,22 @@
       <workItem from="1610626525320" duration="9000" />
       <workItem from="1610626550195" duration="2755000" />
       <workItem from="1610640642062" duration="618000" />
+      <workItem from="1610892349490" duration="374000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
