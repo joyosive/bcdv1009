@@ -1,0 +1,294 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Integration of GitHub with Jenkins &mdash; Bcdv-1009  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Build a Node.js and React app with npm within Jenkins Pipeline" href="../lab2/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Bcdv-1009
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../lab2/index.html">     Lab-2 Creating Jenkins Pipeline</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">     Lab-5 Integration of GitHub with Jenkins</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Bcdv-1009</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Integration of GitHub with Jenkins</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/modules/lab5/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="integration-of-github-with-jenkins">
+<h1>Integration of GitHub with Jenkins<a class="headerlink" href="#integration-of-github-with-jenkins" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p>Go to Jenkins UI and Open Blue Oceans</p></li>
+</ul>
+<div class="figure align-default">
+<img alt="../../_images/001.png" src="../../_images/001.png" />
+</div>
+<ul class="simple">
+<li><p>Create a new Pipeline</p></li>
+</ul>
+<div class="figure align-default">
+<img alt="../../_images/011.png" src="../../_images/011.png" />
+</div>
+<ul class="simple">
+<li><p>Select the remote version control system from available options &amp; connect Jenkins to the remote VCS via personal access token</p></li>
+</ul>
+<div class="figure align-default">
+<img alt="../../_images/021.png" src="../../_images/021.png" />
+</div>
+<ul class="simple">
+<li><p>Owner of the repository can go to <a class="reference external" href="https://github.com/settings/profile">https://github.com/settings/profile</a></p></li>
+</ul>
+<div class="figure align-default">
+<img alt="../../_images/031.png" src="../../_images/031.png" />
+</div>
+<ul class="simple">
+<li><p>Click on personal access token</p></li>
+</ul>
+<div class="figure align-default">
+<img alt="../../_images/041.png" src="../../_images/041.png" />
+</div>
+<ul class="simple">
+<li><p>Click Generate new token</p></li>
+</ul>
+<div class="figure align-default">
+<img alt="../../_images/051.png" src="../../_images/051.png" />
+</div>
+<ul class="simple">
+<li><p>Make the scope selection as shown.</p></li>
+</ul>
+<div class="figure align-default">
+<img alt="../../_images/05-9.png" src="../../_images/05-9.png" />
+</div>
+<ul class="simple">
+<li><p>Copy personal access token</p></li>
+</ul>
+<div class="figure align-default">
+<img alt="../../_images/061.png" src="../../_images/061.png" />
+</div>
+<ul class="simple">
+<li><p>Paste the personal access from clipboard</p></li>
+</ul>
+<div class="figure align-default">
+<img alt="../../_images/07.png" src="../../_images/07.png" />
+</div>
+<ul class="simple">
+<li><p>Select your username / organisation.</p></li>
+</ul>
+<div class="figure align-default">
+<img alt="../../_images/081.png" src="../../_images/081.png" />
+</div>
+<ul class="simple">
+<li><p>Click on create pipeline.</p></li>
+</ul>
+<div class="figure align-default">
+<img alt="../../_images/101.png" src="../../_images/101.png" />
+</div>
+<ul class="simple">
+<li><p>Once build is triggered via GitHub repository</p></li>
+</ul>
+<div class="figure align-default">
+<img alt="../../_images/121.png" src="../../_images/121.png" />
+</div>
+<div class="figure align-default">
+<img alt="../../_images/131.png" src="../../_images/131.png" />
+</div>
+<div class="figure align-default">
+<img alt="../../_images/141.png" src="../../_images/141.png" />
+</div>
+<div class="figure align-default">
+<img alt="../../_images/15.png" src="../../_images/15.png" />
+</div>
+<div class="figure align-default">
+<img alt="../../_images/16.png" src="../../_images/16.png" />
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../lab2/index.html" class="btn btn-neutral float-left" title="Build a Node.js and React app with npm within Jenkins Pipeline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

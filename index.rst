@@ -10,3 +10,4 @@ Lab Work for BCDV-1009
    :maxdepth: 2
 
         Lab-2 Creating Jenkins Pipeline <./modules/lab2/index.rst>
+        Lab-5 Integration of GitHub with Jenkins <./modules/lab5/index.rst>
