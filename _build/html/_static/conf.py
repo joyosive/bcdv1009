@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Bcdv-1009'
+project = 'Semester-2 GBC'
 copyright = '2020'
 author = 'Joy'
 
