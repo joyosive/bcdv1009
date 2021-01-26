@@ -33,6 +33,7 @@ Solution
 
 .. code-block:: javascript
   :linenos:
+  :emphasize-lines: 139, 140, 141, 142, 143, 144, 145, 146, 147
 
    // SPDX-License-Identifier: MIT
 
