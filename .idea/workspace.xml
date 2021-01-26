@@ -20,7 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce6eab95-6eb9-4347-bf8d-f295d358a860" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/modules/lab5/index.rst" beforeDir="false" afterPath="$PROJECT_DIR$/modules/lab5/index.rst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/modules/lab8/index.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.rst" beforeDir="false" afterPath="$PROJECT_DIR$/index.rst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +66,8 @@
       <workItem from="1610626525320" duration="9000" />
       <workItem from="1610626550195" duration="2755000" />
       <workItem from="1610640642062" duration="618000" />
-      <workItem from="1610892349490" duration="475000" />
+      <workItem from="1610892349490" duration="1110000" />
+      <workItem from="1611686180448" duration="300000" />
     </task>
     <servers />
   </component>
@@ -81,5 +84,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

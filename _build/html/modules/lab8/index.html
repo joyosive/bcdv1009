@@ -1,0 +1,572 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>BCDV 1010 : Lab - 8 &mdash; Bcdv-1009  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Lab 5 (Group Lab)" href="../lab5/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Bcdv-1009
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../lab2/index.html">     Lab-2 Creating Jenkins Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lab5/index.html">     Lab-5 Integration of GitHub with Jenkins</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">     BCDV-1010 Lab-8</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#solution">Solution</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Bcdv-1009</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>BCDV 1010 : Lab - 8</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/modules/lab8/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="bcdv-1010-lab-8">
+<h1>BCDV 1010 : Lab - 8<a class="headerlink" href="#bcdv-1010-lab-8" title="Permalink to this headline">¶</a></h1>
+<p><strong>Attack Scenario</strong></p>
+<ul class="simple">
+<li><p>Alice allows Bob to transfer N of Alice’s tokens (N&gt;0)  by calling approve method on Token smart contract passing Bob’s address and N as method arguments</p></li>
+<li><p>After some time, Alice decides to change from N to M (M&gt;0) the number of Alice’s tokens Bob is allowed to transfer, so she calls approve method again, this time passing Bob’s address and M as method arguments</p></li>
+<li><p>Bob notices Alice’s second transaction before it was mined and quickly sends another transaction that calls transferFrom method to transfer N Alice’s tokens somewhere</p></li>
+<li><p>If Bob’s transaction will be executed before Alice’s transaction, then Bob will successfully transfer N Alice’s tokens and will gain an ability to transfer another M tokens</p></li>
+<li><p>Before Alice noticed that something went wrong, Bob calls transferFrom method again, this time to transfer M Alice’s tokens.</p></li>
+<li><p>So, Alice’s attempt to change Bob’s allowance from N to M (N&gt;0 and M&gt;0) made it possible for Bob to transfer N+M of Alice’s tokens, while Alice never wanted to allow so many of her tokens to be transferred by Bob.</p></li>
+</ul>
+<p><strong>Attack Analysis</strong></p>
+<p>The attack described above is possible because approve method overrides current allowance regardless of whether spender already used it or not, so there is no way to increase or decrease allowance by certain value atomically, unless token owner is a smart contract, not an account. Note that unlike accounts, smart contracts may perform several operations atomically, i.e. check current allowance and then set new one.</p>
+<p><strong>Write an ERC20 compliant contract with two additional functionalities as follows:</strong></p>
+<ol class="arabic simple">
+<li><p>increaseAllowance(address spender, uint256 addedValue) - Atomatically increases the allowance granted by spender to caller</p></li>
+<li><p>decreaseAllowance(address spender, uint256 addedValue)- Atomatically decreases the allowance granted by spender to caller</p></li>
+</ol>
+<p>Use this contract as a starting point.</p>
+<p>Hint : Use approve() function to solve.</p>
+<div class="section" id="solution">
+<h2>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-javascript notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168</pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="c1">// SPDX-License-Identifier: MIT</span>
+
+ <span class="nx">pragma</span> <span class="nx">solidity</span> <span class="o">^</span><span class="mf">0.6.10</span><span class="p">;</span>
+
+ <span class="cm">/**</span>
+<span class="cm">  * @dev Interface of the ERC20 standard as defined in the EIP.</span>
+<span class="cm">  */</span>
+ <span class="kr">interface</span> <span class="nx">IERC20</span> <span class="p">{</span>
+     <span class="cm">/**</span>
+<span class="cm">      * @dev Returns the amount of tokens in existence.</span>
+<span class="cm">      */</span>
+     <span class="kd">function</span> <span class="nx">totalSupply</span><span class="p">()</span> <span class="nx">external</span> <span class="nx">view</span> <span class="nx">returns</span> <span class="p">(</span><span class="nx">uint256</span><span class="p">);</span>
+
+     <span class="cm">/**</span>
+<span class="cm">      * @dev Returns the amount of tokens owned by `account`.</span>
+<span class="cm">      */</span>
+     <span class="kd">function</span> <span class="nx">balanceOf</span><span class="p">(</span><span class="nx">address</span> <span class="nx">account</span><span class="p">)</span> <span class="nx">external</span> <span class="nx">view</span> <span class="nx">returns</span> <span class="p">(</span><span class="nx">uint256</span><span class="p">);</span>
+
+     <span class="cm">/**</span>
+<span class="cm">      * @dev Moves `amount` tokens from the caller&#39;s account to `recipient`.</span>
+<span class="cm">      *</span>
+<span class="cm">      * Returns a boolean value indicating whether the operation succeeded.</span>
+<span class="cm">      *</span>
+<span class="cm">      * Emits a {Transfer} event.</span>
+<span class="cm">      */</span>
+     <span class="kd">function</span> <span class="nx">transfer</span><span class="p">(</span><span class="nx">address</span> <span class="nx">recipient</span><span class="p">,</span> <span class="nx">uint256</span> <span class="nx">amount</span><span class="p">)</span> <span class="nx">external</span> <span class="nx">returns</span> <span class="p">(</span><span class="nx">bool</span><span class="p">);</span>
+
+     <span class="cm">/**</span>
+<span class="cm">      * @dev Returns the remaining number of tokens that `spender` will be</span>
+<span class="cm">      * allowed to spend on behalf of `owner` through {transferFrom}. This is</span>
+<span class="cm">      * zero by default.</span>
+<span class="cm">      *</span>
+<span class="cm">      * This value changes when {approve} or {transferFrom} are called.</span>
+<span class="cm">      */</span>
+     <span class="kd">function</span> <span class="nx">allowance</span><span class="p">(</span><span class="nx">address</span> <span class="nx">owner</span><span class="p">,</span> <span class="nx">address</span> <span class="nx">spender</span><span class="p">)</span> <span class="nx">external</span> <span class="nx">view</span> <span class="nx">returns</span> <span class="p">(</span><span class="nx">uint256</span><span class="p">);</span>
+
+     <span class="cm">/**</span>
+<span class="cm">      * @dev Sets `amount` as the allowance of `spender` over the caller&#39;s tokens.</span>
+<span class="cm">      *</span>
+<span class="cm">      * Returns a boolean value indicating whether the operation succeeded.</span>
+<span class="cm">      *</span>
+<span class="cm">      * IMPORTANT: Beware that changing an allowance with this method brings the risk</span>
+<span class="cm">      * that someone may use both the old and the new allowance by unfortunate</span>
+<span class="cm">      * transaction ordering. One possible solution to mitigate this race</span>
+<span class="cm">      * condition is to first reduce the spender&#39;s allowance to 0 and set the</span>
+<span class="cm">      * desired value afterwards:</span>
+<span class="cm">      * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729</span>
+<span class="cm">      *</span>
+<span class="cm">      * Emits an {Approval} event.</span>
+<span class="cm">      */</span>
+     <span class="kd">function</span> <span class="nx">approve</span><span class="p">(</span><span class="nx">address</span> <span class="nx">spender</span><span class="p">,</span> <span class="nx">uint256</span> <span class="nx">amount</span><span class="p">)</span> <span class="nx">external</span> <span class="nx">returns</span> <span class="p">(</span><span class="nx">bool</span><span class="p">);</span>
+
+     <span class="cm">/**</span>
+<span class="cm">      * @dev Moves `amount` tokens from `sender` to `recipient` using the</span>
+<span class="cm">      * allowance mechanism. `amount` is then deducted from the caller&#39;s</span>
+<span class="cm">      * allowance.</span>
+<span class="cm">      *</span>
+<span class="cm">      * Returns a boolean value indicating whether the operation succeeded.</span>
+<span class="cm">      *</span>
+<span class="cm">      * Emits a {Transfer} event.</span>
+<span class="cm">      */</span>
+     <span class="kd">function</span> <span class="nx">transferFrom</span><span class="p">(</span><span class="nx">address</span> <span class="nx">sender</span><span class="p">,</span> <span class="nx">address</span> <span class="nx">recipient</span><span class="p">,</span> <span class="nx">uint256</span> <span class="nx">amount</span><span class="p">)</span> <span class="nx">external</span> <span class="nx">returns</span> <span class="p">(</span><span class="nx">bool</span><span class="p">);</span>
+
+     <span class="cm">/**</span>
+<span class="cm">      * @dev Emitted when `value` tokens are moved from one account (`from`) to</span>
+<span class="cm">      * another (`to`).</span>
+<span class="cm">      *</span>
+<span class="cm">      * Note that `value` may be zero.</span>
+<span class="cm">      */</span>
+     <span class="nx">event</span> <span class="nx">Transfer</span><span class="p">(</span><span class="nx">address</span> <span class="nx">indexed</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">address</span> <span class="nx">indexed</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">uint256</span> <span class="nx">value</span><span class="p">);</span>
+
+     <span class="cm">/**</span>
+<span class="cm">      * @dev Emitted when the allowance of a `spender` for an `owner` is set by</span>
+<span class="cm">      * a call to {approve}. `value` is the new allowance.</span>
+<span class="cm">      */</span>
+     <span class="nx">event</span> <span class="nx">Approval</span><span class="p">(</span><span class="nx">address</span> <span class="nx">indexed</span> <span class="nx">owner</span><span class="p">,</span> <span class="nx">address</span> <span class="nx">indexed</span> <span class="nx">spender</span><span class="p">,</span> <span class="nx">uint256</span> <span class="nx">value</span><span class="p">);</span>
+ <span class="p">}</span>
+
+ <span class="nx">contract</span> <span class="nx">StandardERC20</span> <span class="nx">is</span> <span class="nx">IERC20</span> <span class="p">{</span>
+     <span class="c1">// state variables</span>
+     <span class="nx">mapping</span> <span class="p">(</span><span class="nx">address</span> <span class="p">=&gt;</span> <span class="nx">uint256</span><span class="p">)</span> <span class="kr">private</span> <span class="nx">_balances</span><span class="p">;</span>
+
+     <span class="nx">mapping</span> <span class="p">(</span><span class="nx">address</span> <span class="p">=&gt;</span> <span class="nx">mapping</span> <span class="p">(</span><span class="nx">address</span> <span class="p">=&gt;</span> <span class="nx">uint256</span><span class="p">))</span> <span class="kr">private</span> <span class="nx">_allowances</span><span class="p">;</span>
+
+     <span class="nx">uint256</span> <span class="kr">private</span> <span class="nx">_totalSupply</span><span class="p">;</span>
+
+     <span class="nx">string</span> <span class="kr">private</span> <span class="nx">_name</span><span class="p">;</span>
+     <span class="nx">string</span> <span class="kr">private</span> <span class="nx">_symbol</span><span class="p">;</span>
+     <span class="nx">uint8</span> <span class="kr">private</span> <span class="nx">_decimals</span><span class="p">;</span>
+
+     <span class="nx">constructor</span> <span class="p">(</span><span class="nx">string</span> <span class="nx">memory</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">string</span> <span class="nx">memory</span> <span class="nx">symbol</span><span class="p">,</span> <span class="nx">uint256</span> <span class="nx">totalSupply</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
+         <span class="nx">_name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+         <span class="nx">_symbol</span> <span class="o">=</span> <span class="nx">symbol</span><span class="p">;</span>
+         <span class="nx">_decimals</span> <span class="o">=</span> <span class="mf">18</span><span class="p">;</span> <span class="c1">// 1 ether  = 10^18 wei</span>
+         <span class="nx">_totalSupply</span> <span class="o">=</span> <span class="nx">totalSupply</span><span class="p">;</span>
+         <span class="nx">_balances</span><span class="p">[</span><span class="nx">msg</span><span class="p">.</span><span class="nx">sender</span><span class="p">]</span> <span class="o">=</span> <span class="nx">_balances</span><span class="p">[</span><span class="nx">msg</span><span class="p">.</span><span class="nx">sender</span><span class="p">]</span> <span class="o">+</span> <span class="nx">totalSupply</span><span class="p">;</span>
+     <span class="p">}</span>
+
+     <span class="kd">function</span> <span class="nx">name</span><span class="p">()</span> <span class="kr">public</span> <span class="nx">view</span> <span class="nx">returns</span> <span class="p">(</span><span class="nx">string</span> <span class="nx">memory</span><span class="p">)</span> <span class="p">{</span>
+         <span class="k">return</span> <span class="nx">_name</span><span class="p">;</span>
+     <span class="p">}</span>
+
+     <span class="kd">function</span> <span class="nx">symbol</span><span class="p">()</span> <span class="kr">public</span> <span class="nx">view</span>  <span class="nx">returns</span> <span class="p">(</span><span class="nx">string</span> <span class="nx">memory</span><span class="p">){</span>
+         <span class="k">return</span> <span class="nx">_symbol</span><span class="p">;</span>
+     <span class="p">}</span>
+
+     <span class="kd">function</span> <span class="nx">decimals</span><span class="p">()</span> <span class="kr">public</span> <span class="nx">view</span> <span class="nx">returns</span><span class="p">(</span><span class="nx">uint8</span><span class="p">)</span> <span class="p">{</span>
+         <span class="k">return</span> <span class="nx">_decimals</span><span class="p">;</span>
+     <span class="p">}</span>
+
+     <span class="kd">function</span> <span class="nx">totalSupply</span><span class="p">()</span> <span class="kr">public</span> <span class="nx">view</span> <span class="nx">override</span> <span class="nx">returns</span> <span class="p">(</span><span class="nx">uint256</span><span class="p">)</span> <span class="p">{</span>
+         <span class="k">return</span> <span class="nx">_totalSupply</span><span class="p">;</span>
+     <span class="p">}</span>
+
+     <span class="kd">function</span> <span class="nx">balanceOf</span><span class="p">(</span><span class="nx">address</span> <span class="nx">account</span><span class="p">)</span> <span class="kr">public</span> <span class="nx">view</span> <span class="nx">override</span> <span class="nx">returns</span> <span class="p">(</span><span class="nx">uint256</span><span class="p">)</span> <span class="p">{</span>
+         <span class="k">return</span> <span class="nx">_balances</span><span class="p">[</span><span class="nx">account</span><span class="p">];</span>
+     <span class="p">}</span>
+
+     <span class="kd">function</span> <span class="nx">transfer</span><span class="p">(</span><span class="nx">address</span> <span class="nx">recipient</span><span class="p">,</span> <span class="nx">uint256</span> <span class="nx">amount</span><span class="p">)</span> <span class="kr">public</span> <span class="nx">override</span> <span class="nx">returns</span> <span class="p">(</span><span class="nx">bool</span><span class="p">)</span> <span class="p">{</span>
+         <span class="nx">_transfer</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">sender</span><span class="p">,</span> <span class="nx">recipient</span><span class="p">,</span><span class="nx">amount</span><span class="p">);</span>
+         <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+     <span class="p">}</span>
+
+     <span class="kd">function</span> <span class="nx">approve</span><span class="p">(</span><span class="nx">address</span> <span class="nx">spender</span><span class="p">,</span> <span class="nx">uint256</span> <span class="nx">amount</span><span class="p">)</span> <span class="kr">public</span> <span class="nx">override</span> <span class="nx">returns</span> <span class="p">(</span><span class="nx">bool</span><span class="p">)</span> <span class="p">{</span>
+         <span class="nx">_approve</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">sender</span><span class="p">,</span> <span class="nx">spender</span><span class="p">,</span> <span class="nx">amount</span><span class="p">);</span>
+         <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+     <span class="p">}</span>
+
+     <span class="kd">function</span> <span class="nx">allowance</span><span class="p">(</span><span class="nx">address</span> <span class="nx">owner</span><span class="p">,</span> <span class="nx">address</span> <span class="nx">spender</span><span class="p">)</span> <span class="kr">public</span> <span class="nx">override</span> <span class="nx">view</span> <span class="nx">returns</span><span class="p">(</span><span class="nx">uint256</span><span class="p">)</span> <span class="p">{</span>
+         <span class="k">return</span> <span class="nx">_allowances</span><span class="p">[</span><span class="nx">owner</span><span class="p">][</span><span class="nx">spender</span><span class="p">];</span>
+     <span class="p">}</span>
+
+     <span class="kd">function</span> <span class="nx">transferFrom</span><span class="p">(</span><span class="nx">address</span> <span class="nx">sender</span><span class="p">,</span> <span class="nx">address</span> <span class="nx">recipient</span><span class="p">,</span> <span class="nx">uint256</span> <span class="nx">amount</span><span class="p">)</span> <span class="kr">public</span> <span class="nx">override</span> <span class="nx">returns</span><span class="p">(</span><span class="nx">bool</span><span class="p">)</span> <span class="p">{</span>
+         <span class="nx">_transfer</span><span class="p">(</span><span class="nx">sender</span><span class="p">,</span> <span class="nx">recipient</span><span class="p">,</span> <span class="nx">amount</span><span class="p">);</span>
+         <span class="nx">_approve</span><span class="p">(</span><span class="nx">sender</span><span class="p">,</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">sender</span><span class="p">,</span> <span class="nx">_allowances</span><span class="p">[</span><span class="nx">sender</span><span class="p">][</span><span class="nx">msg</span><span class="p">.</span><span class="nx">sender</span><span class="p">]</span> <span class="o">-</span> <span class="nx">amount</span><span class="p">);</span>
+         <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+     <span class="p">}</span>
+
+     <span class="kd">function</span> <span class="nx">increaseAllowance</span><span class="p">(</span><span class="nx">address</span> <span class="nx">spender</span><span class="p">,</span> <span class="nx">uint256</span> <span class="nx">addedValue</span><span class="p">)</span> <span class="kr">public</span> <span class="nx">returns</span><span class="p">(</span><span class="nx">bool</span><span class="p">)</span> <span class="p">{</span>
+         <span class="nx">_approve</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">sender</span><span class="p">,</span> <span class="nx">spender</span><span class="p">,</span> <span class="nx">_allowances</span><span class="p">[</span><span class="nx">msg</span><span class="p">.</span><span class="nx">sender</span><span class="p">][</span><span class="nx">spender</span><span class="p">]</span> <span class="o">+</span> <span class="nx">addedValue</span><span class="p">);</span>
+         <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+     <span class="p">}</span>
+
+     <span class="kd">function</span> <span class="nx">decreaseAllowance</span><span class="p">(</span><span class="nx">address</span> <span class="nx">spender</span><span class="p">,</span> <span class="nx">uint256</span> <span class="nx">addedValue</span><span class="p">)</span> <span class="kr">public</span> <span class="nx">returns</span><span class="p">(</span><span class="nx">bool</span><span class="p">)</span> <span class="p">{</span>
+         <span class="nx">_approve</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">sender</span><span class="p">,</span> <span class="nx">spender</span><span class="p">,</span> <span class="nx">_allowances</span><span class="p">[</span><span class="nx">msg</span><span class="p">.</span><span class="nx">sender</span><span class="p">][</span><span class="nx">spender</span><span class="p">]</span> <span class="o">-</span> <span class="nx">addedValue</span><span class="p">);</span>
+         <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+     <span class="p">}</span>
+
+     <span class="kd">function</span> <span class="nx">_transfer</span><span class="p">(</span><span class="nx">address</span> <span class="nx">sender</span><span class="p">,</span> <span class="nx">address</span> <span class="nx">recipient</span><span class="p">,</span> <span class="nx">uint256</span> <span class="nx">amount</span><span class="p">)</span> <span class="nx">internal</span> <span class="p">{</span>
+         <span class="nx">require</span><span class="p">(</span><span class="nx">recipient</span> <span class="o">!=</span> <span class="nx">address</span><span class="p">(</span><span class="mf">0</span><span class="p">),</span><span class="s2">&quot;ERC20: transfer from zero transfer&quot;</span><span class="p">);</span>
+         <span class="nx">require</span><span class="p">(</span><span class="nx">sender</span> <span class="o">!=</span> <span class="nx">address</span><span class="p">(</span><span class="mf">0</span><span class="p">),</span><span class="s2">&quot;ERC20: transfer from zero transfer&quot;</span><span class="p">);</span>
+
+         <span class="nx">require</span><span class="p">(</span><span class="nx">_balances</span><span class="p">[</span><span class="nx">sender</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="nx">amount</span><span class="p">,</span> <span class="s2">&quot;ERC20: sender does not have enough amount&quot;</span><span class="p">);</span>
+
+         <span class="nx">_balances</span><span class="p">[</span><span class="nx">sender</span><span class="p">]</span> <span class="o">=</span> <span class="nx">_balances</span><span class="p">[</span><span class="nx">sender</span><span class="p">]</span> <span class="o">-</span> <span class="nx">amount</span><span class="p">;</span>
+         <span class="nx">_balances</span><span class="p">[</span><span class="nx">recipient</span><span class="p">]</span> <span class="o">=</span> <span class="nx">_balances</span><span class="p">[</span><span class="nx">recipient</span><span class="p">]</span> <span class="o">+</span> <span class="nx">amount</span><span class="p">;</span>
+         <span class="nx">emit</span> <span class="nx">Transfer</span><span class="p">(</span><span class="nx">sender</span><span class="p">,</span> <span class="nx">recipient</span><span class="p">,</span> <span class="nx">amount</span><span class="p">);</span>
+     <span class="p">}</span>
+
+     <span class="kd">function</span> <span class="nx">_approve</span><span class="p">(</span><span class="nx">address</span> <span class="nx">owner</span><span class="p">,</span> <span class="nx">address</span> <span class="nx">spender</span><span class="p">,</span> <span class="nx">uint256</span> <span class="nx">amount</span><span class="p">)</span> <span class="nx">internal</span> <span class="p">{</span>
+       <span class="nx">require</span><span class="p">(</span><span class="nx">spender</span> <span class="o">!=</span> <span class="nx">address</span><span class="p">(</span><span class="mf">0</span><span class="p">),</span><span class="s2">&quot;ERC20: transfer from zero transfer&quot;</span><span class="p">);</span>
+       <span class="nx">require</span><span class="p">(</span><span class="nx">owner</span> <span class="o">!=</span> <span class="nx">address</span><span class="p">(</span><span class="mf">0</span><span class="p">),</span><span class="s2">&quot;ERC20: transfer from zero transfer&quot;</span><span class="p">);</span>
+
+       <span class="nx">require</span><span class="p">(</span><span class="nx">_balances</span><span class="p">[</span><span class="nx">owner</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="nx">amount</span><span class="p">,</span> <span class="s2">&quot;ERC20: owner does not have enough amount&quot;</span><span class="p">);</span>
+       <span class="nx">_allowances</span><span class="p">[</span><span class="nx">owner</span><span class="p">][</span><span class="nx">spender</span><span class="p">]</span> <span class="o">=</span> <span class="nx">amount</span><span class="p">;</span>
+       <span class="nx">emit</span> <span class="nx">Approval</span><span class="p">(</span><span class="nx">owner</span><span class="p">,</span> <span class="nx">spender</span><span class="p">,</span> <span class="nx">amount</span><span class="p">);</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../lab5/index.html" class="btn btn-neutral float-left" title="Lab 5 (Group Lab)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
