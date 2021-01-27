@@ -12,3 +12,4 @@ Lab Work for BCDV-1009
         Lab-2 Creating Jenkins Pipeline <./modules/lab2/index.rst>
         Lab-5 Integration of GitHub with Jenkins <./modules/lab5/index.rst>
         BCDV-1010 Lab-8 <./modules/lab8/index.rst>
+        BCDV-1010 Lab-3 <./modules/lab3/index.rst>
